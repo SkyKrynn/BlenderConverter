@@ -14,9 +14,7 @@ namespace Blender_Converter
     public partial class frmMain : Form
     {
         private String mInputFile;
-        private ObjectFileReader mObjectFile;
-
-        private JavaOptions mJavaOptions;
+        private IModelFileParser mParser;
 
         public frmMain()
         {
@@ -37,24 +35,39 @@ namespace Blender_Converter
             {
                 mInputFile = dlgOpenObjectFile.FileName;
                 lblObjectFileName.Text = Path.GetFileName(mInputFile);
-                txtBaseFilename.Text = Path.GetFileNameWithoutExtension(mInputFile);
-                mObjectFile = new ObjectFileReader(mInputFile);
-                showInfo(mObjectFile);
-                showSampleData(mObjectFile);
+                txtBaseClassname.Text = Path.GetFileNameWithoutExtension(mInputFile);
+
+                String ext = Path.GetExtension(mInputFile);
+                switch(ext)
+                {
+                    case ".obj":
+                        mParser = new ObjFileParser(mInputFile);
+                        break;
+                    case ".ply":
+                        mParser = new PlyFileParser(mInputFile);
+                        break;
+                    default:
+                        throw new NotSupportedException("Unknown file type");
+                }
+
+                showInfo(mParser.getInfo());
+                showSampleData(mParser.getData());
                 txtOuputFolder.Text = Path.GetDirectoryName(mInputFile);
                 pnlMain.Enabled = true;
             }
         }
 
-        private void showSampleData(ObjectFileReader objFile)
+        private void showSampleData(ModelData data)
         {
-            ModelData data = objFile.Data;
             lstData.Items.Clear();
             lstData.Items.Add("Model Data");
             lstData.Items.Add("P1: " + data.Positions[0,0] + "x " + data.Positions[0,1] + "y " + data.Positions[0,2] + "z");
-            lstData.Items.Add("T1: " + data.Texels[0, 0] + "u " + data.Texels[0, 1] + "v");
             lstData.Items.Add("N1: " + data.Normals[0, 0] + "x " + data.Normals[0, 1] + "y " + data.Normals[0, 2] + "z");
             lstData.Items.Add("F1: " + data.Faces[0, 0] + "p " + data.Faces[0, 1] + "t " + data.Faces[0, 2] + "n");
+            if(mParser.getInfo().NumTexels > 0)
+                lstData.Items.Add("T1: " + data.Texels[0, 0] + "u " + data.Texels[0, 1] + "v");
+            if (mParser.getInfo().NumColors > 0)
+                lstData.Items.Add("C1: " + data.Colors[0, 0] + "r " + data.Colors[0, 1] + "g " + data.Colors[0,2] + "b " + data.Colors[0,3] + "a");
         }
 
         private void clearInfo()
@@ -62,17 +75,19 @@ namespace Blender_Converter
             lblVertices.Text = "";
             lblPositions.Text = "";
             lblTexels.Text = "";
+            lblColors.Text = "";
             lblNormals.Text = "";
             lblFaces.Text = "";
         }
 
-        private void showInfo(ObjectFileReader info)
+        private void showInfo(ModelInfo info)
         {
-            lblVertices.Text = info.Vertices.ToString();
-            lblPositions.Text = info.Positions.ToString();
-            lblTexels.Text = info.Texels.ToString();
-            lblNormals.Text = info.Normals.ToString();
-            lblFaces.Text = info.Texels.ToString();
+            lblVertices.Text = info.NumVertices.ToString();
+            lblPositions.Text = info.NumPositions.ToString();
+            lblTexels.Text = info.NumTexels.ToString();
+            lblColors.Text = info.NumColors.ToString();
+            lblNormals.Text = info.NumNormals.ToString();
+            lblFaces.Text = info.NumFaces.ToString();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -93,9 +108,6 @@ namespace Blender_Converter
             // Check if anything is checked
             if (!chkJava.Checked) return false;
 
-            // For anything checked, options must be set
-            if (chkJava.Checked && mJavaOptions == null) return false;
-
             return true;
         }
 
@@ -104,20 +116,13 @@ namespace Blender_Converter
             btnGenerate.Enabled = AreAllOptionsSet();
         }
 
-        private void lnkJavaOptions_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            frmJavaOptions form = new frmJavaOptions(mJavaOptions);
-            mJavaOptions = form.GetOptions(mJavaOptions);
-            EnableGenerateCommand(sender, e);
-        }
-
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             if (!AreAllOptionsSet())
                 return;
 
-            JavaCodeGenerator generator = new JavaCodeGenerator(mObjectFile.Info, mObjectFile.Data, mJavaOptions);
-            generator.CreateCode(txtOuputFolder.Text, txtBaseFilename.Text);
+            JavaCodeGenerator generator = new JavaCodeGenerator(mParser.getInfo(), mParser.getData());
+            generator.CreateCode(txtOuputFolder.Text, txtBaseClassname.Text);
         }
     }
 }

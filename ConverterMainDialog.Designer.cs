@@ -37,15 +37,16 @@
             this.lblObjectFileName = new System.Windows.Forms.Label();
             this.pnlMain = new System.Windows.Forms.Panel();
             this.grpOutputType = new System.Windows.Forms.GroupBox();
-            this.lnkJavaOptions = new System.Windows.Forms.LinkLabel();
             this.chkJava = new System.Windows.Forms.CheckBox();
             this.lblBaseFilename = new System.Windows.Forms.Label();
-            this.txtBaseFilename = new System.Windows.Forms.TextBox();
+            this.txtBaseClassname = new System.Windows.Forms.TextBox();
             this.btnGenerate = new System.Windows.Forms.Button();
             this.btnChooseOutput = new System.Windows.Forms.Button();
             this.txtOuputFolder = new System.Windows.Forms.TextBox();
             this.lstData = new System.Windows.Forms.ListBox();
             this.grpModelInfo = new System.Windows.Forms.GroupBox();
+            this.lblColors = new System.Windows.Forms.Label();
+            this.lblColorsLabel = new System.Windows.Forms.Label();
             this.lblVertices = new System.Windows.Forms.Label();
             this.lblVerticesLabel = new System.Windows.Forms.Label();
             this.lblFaces = new System.Windows.Forms.Label();
@@ -65,7 +66,7 @@
             // 
             // dlgOpenObjectFile
             // 
-            this.dlgOpenObjectFile.Filter = "Object Files (*.obj)|*.obj";
+            this.dlgOpenObjectFile.Filter = "Object Files (*.obj)|*.obj|Ply Files (*.ply)|*.ply";
             // 
             // mnuMain
             // 
@@ -122,7 +123,7 @@
             // 
             this.pnlMain.Controls.Add(this.grpOutputType);
             this.pnlMain.Controls.Add(this.lblBaseFilename);
-            this.pnlMain.Controls.Add(this.txtBaseFilename);
+            this.pnlMain.Controls.Add(this.txtBaseClassname);
             this.pnlMain.Controls.Add(this.btnGenerate);
             this.pnlMain.Controls.Add(this.btnChooseOutput);
             this.pnlMain.Controls.Add(this.txtOuputFolder);
@@ -138,7 +139,6 @@
             // 
             // grpOutputType
             // 
-            this.grpOutputType.Controls.Add(this.lnkJavaOptions);
             this.grpOutputType.Controls.Add(this.chkJava);
             this.grpOutputType.Location = new System.Drawing.Point(15, 241);
             this.grpOutputType.Name = "grpOutputType";
@@ -147,23 +147,10 @@
             this.grpOutputType.TabStop = false;
             this.grpOutputType.Text = "Output";
             // 
-            // lnkJavaOptions
-            // 
-            this.lnkJavaOptions.AutoSize = true;
-            this.lnkJavaOptions.Location = new System.Drawing.Point(21, 39);
-            this.lnkJavaOptions.Name = "lnkJavaOptions";
-            this.lnkJavaOptions.Size = new System.Drawing.Size(69, 13);
-            this.lnkJavaOptions.TabIndex = 11;
-            this.lnkJavaOptions.TabStop = true;
-            this.lnkJavaOptions.Text = "Java Options";
-            this.lnkJavaOptions.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkJavaOptions_LinkClicked);
-            // 
             // chkJava
             // 
             this.chkJava.AutoSize = true;
-            this.chkJava.Checked = true;
-            this.chkJava.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkJava.Location = new System.Drawing.Point(27, 19);
+            this.chkJava.Location = new System.Drawing.Point(27, 30);
             this.chkJava.Name = "chkJava";
             this.chkJava.Size = new System.Drawing.Size(49, 17);
             this.chkJava.TabIndex = 10;
@@ -177,16 +164,16 @@
             this.lblBaseFilename.AutoSize = true;
             this.lblBaseFilename.Location = new System.Drawing.Point(12, 199);
             this.lblBaseFilename.Name = "lblBaseFilename";
-            this.lblBaseFilename.Size = new System.Drawing.Size(79, 13);
+            this.lblBaseFilename.Size = new System.Drawing.Size(88, 13);
             this.lblBaseFilename.TabIndex = 13;
-            this.lblBaseFilename.Text = "Base Filename:";
+            this.lblBaseFilename.Text = "Base Classname:";
             // 
-            // txtBaseFilename
+            // txtBaseClassname
             // 
-            this.txtBaseFilename.Location = new System.Drawing.Point(97, 196);
-            this.txtBaseFilename.Name = "txtBaseFilename";
-            this.txtBaseFilename.Size = new System.Drawing.Size(159, 20);
-            this.txtBaseFilename.TabIndex = 12;
+            this.txtBaseClassname.Location = new System.Drawing.Point(106, 196);
+            this.txtBaseClassname.Name = "txtBaseClassname";
+            this.txtBaseClassname.Size = new System.Drawing.Size(159, 20);
+            this.txtBaseClassname.TabIndex = 12;
             // 
             // btnGenerate
             // 
@@ -221,11 +208,13 @@
             this.lstData.FormattingEnabled = true;
             this.lstData.Location = new System.Drawing.Point(355, 43);
             this.lstData.Name = "lstData";
-            this.lstData.Size = new System.Drawing.Size(183, 69);
+            this.lstData.Size = new System.Drawing.Size(183, 82);
             this.lstData.TabIndex = 7;
             // 
             // grpModelInfo
             // 
+            this.grpModelInfo.Controls.Add(this.lblColors);
+            this.grpModelInfo.Controls.Add(this.lblColorsLabel);
             this.grpModelInfo.Controls.Add(this.lblVertices);
             this.grpModelInfo.Controls.Add(this.lblVerticesLabel);
             this.grpModelInfo.Controls.Add(this.lblFaces);
@@ -242,6 +231,24 @@
             this.grpModelInfo.TabIndex = 6;
             this.grpModelInfo.TabStop = false;
             this.grpModelInfo.Text = "Model Info";
+            // 
+            // lblColors
+            // 
+            this.lblColors.AutoSize = true;
+            this.lblColors.Location = new System.Drawing.Point(286, 42);
+            this.lblColors.Name = "lblColors";
+            this.lblColors.Size = new System.Drawing.Size(35, 13);
+            this.lblColors.TabIndex = 11;
+            this.lblColors.Text = "label1";
+            // 
+            // lblColorsLabel
+            // 
+            this.lblColorsLabel.AutoSize = true;
+            this.lblColorsLabel.Location = new System.Drawing.Point(241, 42);
+            this.lblColorsLabel.Name = "lblColorsLabel";
+            this.lblColorsLabel.Size = new System.Drawing.Size(39, 13);
+            this.lblColorsLabel.TabIndex = 10;
+            this.lblColorsLabel.Text = "Colors:";
             // 
             // lblVertices
             // 
@@ -265,7 +272,7 @@
             // lblFaces
             // 
             this.lblFaces.AutoSize = true;
-            this.lblFaces.Location = new System.Drawing.Point(285, 42);
+            this.lblFaces.Location = new System.Drawing.Point(173, 42);
             this.lblFaces.Name = "lblFaces";
             this.lblFaces.Size = new System.Drawing.Size(35, 13);
             this.lblFaces.TabIndex = 7;
@@ -275,7 +282,7 @@
             // lblFacesLabel
             // 
             this.lblFacesLabel.AutoSize = true;
-            this.lblFacesLabel.Location = new System.Drawing.Point(241, 42);
+            this.lblFacesLabel.Location = new System.Drawing.Point(128, 42);
             this.lblFacesLabel.Name = "lblFacesLabel";
             this.lblFacesLabel.Size = new System.Drawing.Size(39, 13);
             this.lblFacesLabel.TabIndex = 6;
@@ -285,7 +292,7 @@
             // lblNormals
             // 
             this.lblNormals.AutoSize = true;
-            this.lblNormals.Location = new System.Drawing.Point(174, 42);
+            this.lblNormals.Location = new System.Drawing.Point(60, 42);
             this.lblNormals.Name = "lblNormals";
             this.lblNormals.Size = new System.Drawing.Size(35, 13);
             this.lblNormals.TabIndex = 5;
@@ -294,7 +301,7 @@
             // lblNormalsLabel
             // 
             this.lblNormalsLabel.AutoSize = true;
-            this.lblNormalsLabel.Location = new System.Drawing.Point(120, 42);
+            this.lblNormalsLabel.Location = new System.Drawing.Point(6, 42);
             this.lblNormalsLabel.Name = "lblNormalsLabel";
             this.lblNormalsLabel.Size = new System.Drawing.Size(48, 13);
             this.lblNormalsLabel.TabIndex = 4;
@@ -392,8 +399,9 @@
         private System.Windows.Forms.CheckBox chkJava;
         private System.Windows.Forms.GroupBox grpOutputType;
         private System.Windows.Forms.Label lblBaseFilename;
-        private System.Windows.Forms.TextBox txtBaseFilename;
-        private System.Windows.Forms.LinkLabel lnkJavaOptions;
+        private System.Windows.Forms.TextBox txtBaseClassname;
+        private System.Windows.Forms.Label lblColors;
+        private System.Windows.Forms.Label lblColorsLabel;
     }
 }
 
